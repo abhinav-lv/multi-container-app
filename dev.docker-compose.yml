@@ -13,6 +13,7 @@ services:
       context: ./server
       dockerfile: Dockerfile.dev
     volumes:
+      - /home/app/node_modules
       - ./server:/home/app
     depends_on:
       - redis
@@ -26,6 +27,7 @@ services:
       context: ./worker
       dockerfile: Dockerfile.dev
     volumes:
+      - /home/app/node_modules
       - ./worker:/home/app
     depends_on:
       - redis
@@ -39,6 +41,7 @@ services:
       context: ./client
       dockerfile: Dockerfile.dev
     volumes:
+      - /home/app/node_modules
       - ./client:/home/app
     depends_on:
       - server

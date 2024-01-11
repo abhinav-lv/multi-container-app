@@ -21,6 +21,7 @@ async function init() {
   app.post("/api/index", async (req, res) => {
     const { index }: { index: number } = req.body;
     await pub.publish("fibo", `${index}`);
+    console.log("published index: ", index);
     res.json({
       service: "Express Server",
       route: "/index",

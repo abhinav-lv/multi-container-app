@@ -5,7 +5,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   const target = `http://${env.VITE_EXPRESS_API_HOST}:${env.VITE_EXPRESS_API_PORT}`;
-  console.log({ env, target });
 
   return {
     plugins: [react()],

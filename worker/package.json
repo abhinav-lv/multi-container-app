@@ -1,0 +1,19 @@
+{
+  "name": "worker",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "scripts": {
+    "dev": "bun --hot index.ts",
+    "build": "bun build --target=bun index.ts --outfile=index.js",
+    "start": "bun run build && bun index.js"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@redis/client": "^1.5.13"
+  }
+}

@@ -1,0 +1,9 @@
+FROM oven/bun:latest
+
+WORKDIR /home/app
+
+COPY package.json .
+RUN bun install
+COPY . .
+
+CMD ["bun", "dev"]

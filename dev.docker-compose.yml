@@ -3,24 +3,29 @@ version: "3"
 services:
   redis:
     image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - my_network
 
-  server:
+  nginx:
+    restart: always
+    depends_on:
+      - client
+      - api
     build:
-      context: ./server
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "3050:80"
+
+  api:
+    build:
+      context: ./api
       dockerfile: Dockerfile.dev
     volumes:
       - /home/app/node_modules
-      - ./server:/home/app
+      - ./api:/home/app
     depends_on:
       - redis
     environment:
       - REDIS_HOST=redis
-    networks:
-      - my_network
 
   worker:
     build:
@@ -31,11 +36,9 @@ services:
       - ./worker:/home/app
     depends_on:
       - redis
-      - server
+      - api
     environment:
       - REDIS_HOST=redis
-    networks:
-      - my_network
 
   client:
     build:
@@ -45,15 +48,4 @@ services:
       - /home/app/node_modules
       - ./client:/home/app
     depends_on:
-      - server
-    environment:
-      - VITE_EXPRESS_API_HOST=server
-      - VITE_EXPRESS_API_PORT=3000
-    networks:
-      - my_network
-    ports:
-      - "5173:5173"
-
-networks:
-  my_network:
-    driver: bridge
+      - api

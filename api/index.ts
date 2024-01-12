@@ -14,11 +14,11 @@ async function init() {
   const app = express();
   app.use(express.json());
 
-  app.get("/api", (_, res) =>
+  app.get("/", (_, res) =>
     res.json({ service: "Express Server", route: "root" })
   );
 
-  app.post("/api/index", async (req, res) => {
+  app.post("/index", async (req, res) => {
     const { index }: { index: number } = req.body;
     await pub.publish("fibo", `${index}`);
     console.log("published index: ", index);
@@ -30,15 +30,13 @@ async function init() {
     });
   });
 
-  app.get("/api/calculated", async (_, res) => {
+  app.get("/calculated", async (_, res) => {
     const results = await redisClient.hGetAll("values");
     res.json({ service: "Express Server", results });
   });
 
   const PORT = 3000;
-  app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-  );
+  app.listen(PORT, () => console.log(`API server listening for requests`));
 }
 
 init();
